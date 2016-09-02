@@ -68,8 +68,6 @@ end
 #########################################################
 
 function __fish_print_p4_opened_files -d "Use `p4 diff` to output the names of all opened files"
-    # p4 opened -s | sed 's/#.*//' | p4 -x - where | awk '/^\// {print $3}'
-    # p4 opened -s | string replace -ar '(^\S+).*$' '$1' | p4 -x - where | string replace -ar '\S+\s\S+\s(\S+)' '$1'
     string replace -a "$PWD/" '' (p4 diff -sa -sb -sr)
 end
 
@@ -469,8 +467,7 @@ for a in 'client' 'workspace'
     __fish_p4_register_command_option $a -x -a '(__fish_print_p4_workspaces)'
     __fish_p4_register_command_option $a -s f -d "Allows the last modification date, which is normally read-only, to be set"
     __fish_p4_register_command_option $a -s d -f -a '(__fish_print_p4_workspaces)' -d "Delete the specified client workspace whether or not the workspace is owned by the user"
-    # __fish_p4_register_command_option $a -a '-Fs' -d 'Deletes client with shelves (must follow -f)'
-    __fish_p4_register_command_option $a -s F -a 's' -d 'Deletes client with shelves (must follow -f)'
+    __fish_p4_register_command_option $a -o Fs -d 'Deletes client with shelves (must follow -f)'
     __fish_p4_register_command_option $a -s o -d "Write the client workspace spec to standard output"
     __fish_p4_register_command_option $a -s i -d "Read the client workspace spec from standard input"
     __fish_p4_register_command_option $a -s c -x -a '(__fish_print_p4_workspace_changelists)' -d "When used with -S stream, displays the workspace spec that would have been created for a stream at the moment the change was submitted"
@@ -666,7 +663,7 @@ for a in 'integ' 'integrate'
     __fish_p4_register_command_option $a -s v -d "Open files for branching without copying toFiles into the client workspace"
     __fish_p4_register_command_option $a -s c -x -a '(__fish_print_p4_pending_changelists)' -d "Open the toFiles for branch, integrate, or delete in the specified pending changelist"
     __fish_p4_register_command_option $a -s q -d "Quiet mode"
-    __fish_p4_register_command_option $a -a '-Di' -d "f the source file has been deleted and re-added, revisions that precede the deletion will be considered to be part of the same source file"
+    __fish_p4_register_command_option $a -o Di -d "f the source file has been deleted and re-added, revisions that precede the deletion will be considered to be part of the same source file"
     __fish_p4_register_command_option $a -s f -d "Force the integration on all revisions of fromFile and toFile, even if some revisions have been integrated in the past"
     __fish_p4_register_command_option $a -s h -d "Use the have revision"
     __fish_p4_register_command_option $a -s O -x -a '(__fish_print_p4_integrate_output_options)' -d "Specify output options"
